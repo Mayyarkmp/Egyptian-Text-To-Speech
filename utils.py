@@ -1,5 +1,6 @@
 import os
 from pydub import AudioSegment
+import soundfile as sf
 import pandas as pd
 
 def get_audio_durations(csv_path, folder_path):
@@ -20,8 +21,11 @@ def get_audio_durations(csv_path, folder_path):
     csv_path = csv_path.replace('.csv', '_new') + '.csv'
     df.to_csv(csv_path, encoding='utf-8-sig', index=False)
 
+def sample_rate_finder(folder_path):
+    samples = []
+    for i, audio in enumerate(os.listdir(folder_path)):
+        print(f'Processing audio {i}')
+        audio_path = os.path.join(folder_path, audio)
+        data, sample_rate = sf.read(audio_path)
+        samples.append(len(data))
 
-if __name__ == '__main__':
-    folder_path = ""
-    csv_path = ""
-    get_audio_durations(csv_path, folder_path)
