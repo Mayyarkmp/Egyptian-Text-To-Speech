@@ -95,10 +95,6 @@ class AudioSplitter:
         os.makedirs(self.output_audio_dir, exist_ok=True)
         
         for index, row in self.df.iterrows():
-            # Need to be removed later on
-            if index > 1:
-                break
-
             filename = f"{row['channel_name'].lower()}_{self.audio_name}_{index}"
             self.ydl_opts['outtmpl'] = os.path.join(self.output_audio_dir, f'{filename}')
             
