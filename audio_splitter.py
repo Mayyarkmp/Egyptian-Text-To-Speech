@@ -16,8 +16,9 @@ class AudioSplitter:
                  output_csv_name,
                  silence_len=200, 
                  silence_thresh=-40,
+                 output_splitted_audio_dir='./audios/splitted_audios',
                  output_audio_dir='./audios',
-                 output_csv_dir='./datasets_csv',
+                 output_csv_dir='./datasets_csv/audio_datasets',
                  conditional_function=None,
                 ):
         self.audio_name = audio_name
@@ -25,6 +26,7 @@ class AudioSplitter:
         self.output_csv_name = output_csv_name
         self.silence_len = silence_len
         self.silence_thresh = silence_thresh
+        self.output_splitted_audio_dir = output_splitted_audio_dir
         self.output_audio_dir = output_audio_dir
         self.output_csv_dir = output_csv_dir
         self.conditional_function = conditional_function
@@ -69,7 +71,7 @@ class AudioSplitter:
             normalized_chunk = self._match_target_amplitude(audio_chunk, -20.0)
             new_filename = filename+f'_chunk_{i}'
             normalized_chunk.export(
-                os.path.join(self.output_audio_dir, new_filename+'.wav'),
+                os.path.join(self.output_splitted_audio_dir, new_filename+'.wav'),
                 bitrate = "192k",
                 format = "wav"
             )
@@ -78,7 +80,11 @@ class AudioSplitter:
         
         original_audio_name_lst.extend([filename]*len(splitted_audio_name_lst))
 
-        return self._caller(lambda: self.conditional_function(splitted_audio_name_lst, original_audio_name_lst, self.output_audio_dir)) if self.conditional_function != None else splitted_audio_name_lst, original_audio_name_lst
+        if self.conditional_function != None:
+            lst, _ = self._conditional_function_caller(lambda: self.conditional_function(splitted_audio_name_lst, original_audio_name_lst, self.output_splitted_audio_dir))
+            splitted_audio_name_lst, original_audio_name_lst = lst[0], lst[1]
+        
+        return splitted_audio_name_lst, original_audio_name_lst
 
 
     def process_videos(self):
@@ -89,7 +95,8 @@ class AudioSplitter:
         os.makedirs(self.output_audio_dir, exist_ok=True)
         
         for index, row in self.df.iterrows():
-            if index > 2:
+            # Need to be removed later on
+            if index > 1:
                 break
 
             filename = f"{row['channel_name'].lower()}_{self.audio_name}_{index}"
