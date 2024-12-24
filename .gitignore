@@ -1,1 +1,6 @@
 ./venv/
+audios/splitted_audios
+compressed_folder.tar.xz
+datasets_csv
+audios
+audio_duration.csv
