@@ -56,7 +56,7 @@ class AudioSplitter:
         return aChunk.apply_gain(change_in_dBFS)
 
 
-    def _split_audio(self, filename):
+    def split_audio(self, filename):
         audio = AudioSegment.from_file(os.path.join(self.output_audio_dir, filename+'.wav'), format="wav")
         chunks = split_on_silence (
                 audio,
@@ -106,7 +106,7 @@ class AudioSplitter:
             except Exception as e:
                 print(f"\n\nError downloading {row['video_title']}: {str(e)}")
 
-            splitted_audio_lst, original_audio_lst = self._split_audio(filename)            
+            splitted_audio_lst, original_audio_lst = self.split_audio(filename)            
             splitted_audio_name_lst.extend(splitted_audio_lst)
             original_audio_name_lst.extend(original_audio_lst)
             video_title_lst.extend([row['video_title']]*len(original_audio_lst))
