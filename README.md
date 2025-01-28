@@ -3,6 +3,12 @@
 # EGTTS V0.1
 EGTTS V0.1 is a cutting-edge text-to-speech (TTS) model specifically designed for Egyptian Arabic. Built on the XTTS v2 architecture, it transforms written Egyptian Arabic text into natural-sounding speech, enabling seamless communication in various applications such as voice assistants, educational tools, and chatbots.
 
+## Try It Out
+✨ **Experience the magic of EGTTS V0.1 live!** Try the model directly through this [HuggingFace Space](https://huggingface.co/spaces/MohamedRashad/Egyptian-Arabic-TTS).
+
+## Download The Model
+📥 **Get the model now!** Download EGTTS V0.1 directly from [HuggingFace](https://huggingface.co/OmarSamir/EGTTS-V0.1).
+
 ## Quick Start
 ### Dependencies to install
 ```bash
