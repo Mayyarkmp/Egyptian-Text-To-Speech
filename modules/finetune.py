@@ -118,3 +118,9 @@ if __name__ == "__main__":
         final_accuracy=0.92,
         sleep_time_per_epoch=2
     )
+    parser = argparse.ArgumentParser(description="Training process.")
+
+    # Add arguments for each parameter of the train function
+    parser.add_argument(
+        "--dataset",
+    )
