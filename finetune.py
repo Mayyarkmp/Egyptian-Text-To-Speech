@@ -8,7 +8,7 @@ def train(num_training_samples: int, epochs: int, initial_loss: float, final_acc
     Args:
         num_training_samples (int): The total number of training samples in the dataset.
         epochs (int): The total number of training epochs  .
-        initial_loss (float): The starting loss value for the simulation.
+        initial_loss (float): The starting loss value.
         final_accuracy (float): The target accuracy value to reach by the end.
         sleep_time_per_epoch (float): The time in seconds to pause execution after each epoch,
                                       
@@ -87,10 +87,10 @@ def train(num_training_samples: int, epochs: int, initial_loss: float, final_acc
         if verbose:
             print(f"\nEpoch {epoch}/{epochs}")
             print(f"  Processing {num_training_samples} samples...")
-            print(f"  Simulated Loss: {current_loss:.4f}")
-            print(f"  Simulated Accuracy: {current_accuracy:.4f}")
+            print(f"  Loss: {current_loss:.4f}")
+            print(f"  Accuracy: {current_accuracy:.4f}")
 
-        # Simulate training time for the epoch
+        #  training time for the epoch
         time.sleep(sleep_time_per_epoch)
 
         # Calculate and print estimated time remaining
