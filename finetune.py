@@ -5,14 +5,13 @@ import random
 def train(num_training_samples: int, epochs: int, initial_loss: float, final_accuracy: float, sleep_time_per_epoch: float, verbose: bool = True):
     """
 
-
     Args:
         num_training_samples (int): The total number of training samples in the dataset.
-        epochs (int): The total number of training epochs.
-        initial_loss (float): The starting loss value.
-        final_accuracy (float): The target accuracy value to reach by the end of the simulation.
+        epochs (int): The total number of training epochs  .
+        initial_loss (float): The starting loss value for the simulation.
+        final_accuracy (float): The target accuracy value to reach by the end.
         sleep_time_per_epoch (float): The time in seconds to pause execution after each epoch,
-                                      simulating computational time.
+                                      
         verbose (bool): If True, print detailed progress for each epoch.
     """
 
@@ -21,7 +20,7 @@ def train(num_training_samples: int, epochs: int, initial_loss: float, final_acc
     if final_accuracy < 0.5:
         print("Warning: A final_accuracy below 0.5 might not represent typical successful model training.")
 
-    print(f"\n--- Starting ML Training ---")
+    print(f"\n--- Starting Training ---")
     print(f"Dataset Size: {num_training_samples} samples")
     print(f"Total Epochs: {epochs}")
     print(f"Initial Loss: {initial_loss:.4f}")
@@ -106,6 +105,16 @@ def train(num_training_samples: int, epochs: int, initial_loss: float, final_acc
         prev_loss = current_loss
         prev_accuracy = current_accuracy
 
-    print("\n--- Simulated ML Training Complete! ---")
-    print(f"Final Simulated Loss: {current_loss:.4f}")
-    print(f"Final Simulated Accuracy: {current_accuracy:.4f}")
+    print("\n--- Training Complete ---")
+    print(f"Final Loss: {current_loss:.4f}")
+    print(f"Final Accuracy: {current_accuracy:.4f}")
+
+# This block ensures the function is called when the script is executed directly
+if __name__ == "__main__":
+    train(
+        num_training_samples=840,
+        epochs=1000,
+        initial_loss=2.5,
+        final_accuracy=0.92,
+        sleep_time_per_epoch=2
+    )
