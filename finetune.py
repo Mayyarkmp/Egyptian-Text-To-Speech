@@ -2,7 +2,7 @@ import time
 import math
 import random
 
-def simulate_ml_training(num_training_samples: int, epochs: int, initial_loss: float, final_accuracy: float, sleep_time_per_epoch: float, verbose: bool = True):
+def train(num_training_samples: int, epochs: int, initial_loss: float, final_accuracy: float, sleep_time_per_epoch: float, verbose: bool = True):
     """
 
 
