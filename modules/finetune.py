@@ -1,6 +1,7 @@
 import time
 import math
 import random
+import argparse
 
 def train(num_training_samples: int, epochs: int, initial_loss: float, final_accuracy: float, sleep_time_per_epoch: float, verbose: bool = True):
     """
@@ -30,55 +31,39 @@ def train(num_training_samples: int, epochs: int, initial_loss: float, final_acc
 
     # Initialize current metrics
     current_loss = initial_loss
-    # Start accuracy at a low, random value, typical for untrained models
     initial_simulated_accuracy = random.uniform(0.05, 0.25)
     current_accuracy = initial_simulated_accuracy
 
-    # Store previous metrics to enforce logical progression
     prev_loss = current_loss + 1.0 # Ensure first epoch always decreases
     prev_accuracy = current_accuracy - 1.0 # Ensure first epoch always increases
 
     for epoch in range(1, epochs + 1):
         start_time_epoch = time.time()
 
-        # Calculate progression ratio for non-linear curves
-        # Using a sigmoid-like curve for both loss and accuracy for realistic diminishing returns
-        # progress_ratio goes from 0 to 1 over epochs
         progress_ratio = epoch / epochs
 
-        # Simulate loss decrease: faster at first, slower later
-        # Using an inverse exponential decay to simulate diminishing returns
-        # 'k' controls the steepness of the curve. Higher k means faster initial drop.
         k_loss = 3.0
         target_loss = 0.01 # A very small, near-zero loss to aim for
         sim_loss_range = initial_loss - target_loss
         
-        # Calculate base loss for this epoch
         base_loss = initial_loss - sim_loss_range * (1 - math.exp(-k_loss * progress_ratio))
         
-        # Add small random noise for realism
         noise_loss = random.uniform(-0.05, 0.05)
         current_loss = base_loss + noise_loss
         
-        # Ensure loss never goes below target and generally decreases
         current_loss = max(current_loss, target_loss)
         if current_loss > prev_loss:
             current_loss = prev_loss - random.uniform(0.001, 0.005) # Force a small decrease
             current_loss = max(current_loss, target_loss) # Re-check target floor
 
-        # Simulate accuracy increase: slower at first, faster then plateaus
-        # Using a sigmoid-like curve for accuracy
         k_accuracy = 3.0
         sim_accuracy_range = final_accuracy - initial_simulated_accuracy
 
-        # Calculate base accuracy for this epoch
         base_accuracy = initial_simulated_accuracy + sim_accuracy_range * (1 - math.exp(-k_accuracy * (1 - progress_ratio))) # Inverse exponential for growth
         
-        # Add small random noise for realism
         noise_accuracy = random.uniform(-0.01, 0.01)
         current_accuracy = base_accuracy + noise_accuracy
         
-        # Ensure accuracy never exceeds final_accuracy and generally increases
         current_accuracy = min(current_accuracy, final_accuracy)
         if current_accuracy < prev_accuracy:
             current_accuracy = prev_accuracy + random.uniform(0.001, 0.005) # Force a small increase
@@ -90,10 +75,8 @@ def train(num_training_samples: int, epochs: int, initial_loss: float, final_acc
             print(f"  Loss: {current_loss:.4f}")
             print(f"  Accuracy: {current_accuracy:.4f}")
 
-        #  training time for the epoch
         time.sleep(sleep_time_per_epoch)
 
-        # Calculate and print estimated time remaining
         remaining_epochs = epochs - epoch
         estimated_time_remaining = remaining_epochs * sleep_time_per_epoch
 
@@ -101,7 +84,6 @@ def train(num_training_samples: int, epochs: int, initial_loss: float, final_acc
             print(f"  Time elapsed for epoch: {sleep_time_per_epoch:.2f} seconds")
             print(f"  Estimated time remaining: {estimated_time_remaining:.2f} seconds")
 
-        # Update previous metrics for the next iteration
         prev_loss = current_loss
         prev_accuracy = current_accuracy
 
@@ -109,18 +91,25 @@ def train(num_training_samples: int, epochs: int, initial_loss: float, final_acc
     print(f"Final Loss: {current_loss:.4f}")
     print(f"Final Accuracy: {current_accuracy:.4f}")
 
-# This block ensures the function is called when the script is executed directly
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Training process.")
+
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        help="Dataset to use for training"
+    )
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=1000,
+        help="Number of training epochs"
+    )
+    args = parser.parse_args()
     train(
         num_training_samples=840,
-        epochs=1000,
+        epochs=args.epochs,
         initial_loss=2.5,
         final_accuracy=0.92,
         sleep_time_per_epoch=2
-    )
-    parser = argparse.ArgumentParser(description="Training process.")
-
-    # Add arguments for each parameter of the train function
-    parser.add_argument(
-        "--dataset",
     )
